@@ -5,23 +5,24 @@ downSample = 5;
 dataFolders = dir(pos);
 newFolder = [pos, 'Data/'];
 newFiles = dir(newFolder);
+load('ONOFF.mat');
 for i = 1:length(dataFolders)
     folder = dataFolders(i).name;
     if length(folder)>14 && strcmp(folder(1:9), 'Parkinson')
         Marker = 0;
-        Session = 0;
+        sessionPos = 0;
         newName = folder(11:14);
         if strcmp(newName, 'Conf')
             Marker = 751;
-            Session = 13;
+            sessionPos = 13;
         end
         if strcmp(newName, 'Oddb')
             Marker = 1001;
-            Session = 5;
+            sessionPos = 5;
         end
         if strcmp(newName, 'Rein')
             Marker = 3001;
-            Session = 13;
+            sessionPos = 13;
         end
         dataPath = [pos, folder, '/Data/'];
         dataFiles = dir(dataPath);
@@ -30,14 +31,16 @@ for i = 1:length(dataFolders)
             if length(dataFile)>14 && strcmp(dataFile(end-3:end), '.mat')
                 id = str2double(dataFile(1:3));
                 newId = '';
-                if strcmp(newName, 'Conf') && id < 903
-                    continue
-                end
+                Session = '';
                 if id>889
                     newId = ['N', sprintf('%02d', id-889)];
-                elseif id>812
-                    newId = ['P', sprintf('%02d', id-801)];
+                    Session = dataFile(sessionPos);
                 else
+                    if id>812
+                        id = id - 1;
+                    end
+                    onoff = (id-801)*2+str2double(dataFile(sessionPos));
+                    Session = num2str(ONOFF(onoff,3));
                     newId = ['P', sprintf('%02d', id-800)];
                 end
                 rawData = load([dataPath, dataFile]).EEG;
@@ -55,7 +58,7 @@ for i = 1:length(dataFolders)
                 data = data(channels, 1:downSample ...
                     :epochLen-downSample+mod(epochLen, downSample)+1,:);
                 newFile = [newFolder, newId, newName, ...
-                    dataFile(Session), sprintf('.%3d', epochs), 'epochs.h5'];
+                    Session, sprintf('.%03d', epochs), 'epochs.h5'];
                 disp(newFile);
                 save('-float-hdf5', newFile, 'data', 'stimuli');
                 clear('rawData', 'data', 'stimuli');
