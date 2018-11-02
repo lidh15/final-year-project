@@ -3,7 +3,7 @@ In this project, I aim at applying transfer learning on EEG in order to show sig
 Dr. X WH (though not obtained the degree yet) is working together with me on this topic. 
 He is focusing on data augmentation based on GAN. 
 The dataset we are using is from [Pred+ct](http://predict.cs.unm.edu/). 
-The raw data has a size nearly 124GB. 
+The raw data has a size nearly 122.2GB. 
 Notice that so called 'raw data' in our project is not that raw: there are some little changes including rename 8010, 8060, 8070 to 915, 916, 917 respectively and rename the data folders. 
 And some data should be deprecated.
 
