@@ -1,0 +1,56 @@
+# Conflict Task
+
+## Stimuli Classification
+### Stimulus Type
+1 = A = Reinforced 100%
+2 = B = Reinforced 100% on congruent
+3 = C = Reinforced 100% on incongruent
+4 = D = Reinforced 0%
+### Stimulus Colour (determines which button to press - L/R randomised)
+1 = yellow
+2 = blue
+### Stimulus Congruency
+1 = congruent
+2 = incongruent
+## Stimuli Record
+### Stimulus Triggers
+Stimulus onset trigger format = Colour:Congruency:Type
+e.g., '124' = yellow:incongruent:D
+### Response Triggers
+Press Left Correct = 101; Press Right Correct = 102
+Press Left Incorrect = 103; Press Right Incorrect = 104
+Not recorded
+### Feedback Triggers
+-3 Error! = 6
+-3! No Response = 7
+Correct +1 = 8
+No Reward 0 = 9
+e.g., '  8' = Correct
+### Test/Transfer Stimulus Triggers
+Transfer stimulus onset trigger format = Stim 1:Stim 2
+e.g., ' 23' = B vs C
+### Test/Transfer Response Triggers
+(nb optimal is A > B > C > D - but B == C)
+Optimal Response Left 1 = 1: Optimal Response Right 2 = 2
+Suboptimal Left = 3: Suboptimal Right = 4
+Not recorded
+
+# Oddball Task
+## Stimuli Classification
+### Stimulus Type
+0 = Target 660Hz
+1 = Standard 440Hz
+2 = Novelty
+## Stimuli Record
+### Stimulus Triggers
+Stimulus onset trigger format = 2:0:Type
+e.g., '202' = Novelty
+
+# Reinforcement Learning
+## Stimulus Type
+0 = ?
+1 = ?
+## Stimuli Record
+### Stimulus Triggers
+Stimulus onset trigger format = 1:Type
+e.g., ' 10' = ?
