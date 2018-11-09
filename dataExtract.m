@@ -1,11 +1,14 @@
 pos = 'F:/';
-% Fz FC1 Cz FC2 FCz C1 C2
-channels = [2, 7, 24, 29, 40, 41, 57];
-downSample = 5;
-dataFolders = dir(pos);
 newFolder = [pos, 'Data/'];
+% Fz F3 C3 Pz P3 P4 Cz C4 F4 
+channels = [2, 3, 7, 11, 12, 17, 21, 22, 26];
+downSample = 5;
+newType = 'h5';
+dataFolders = dir(pos);
 newFiles = dir(newFolder);
+channelNum = length(channels);
 load('ONOFF.mat');
+% [b, a] = cheby2(5, 20, [8 40]/250);
 for i = 1:length(dataFolders)
     folder = dataFolders(i).name;
     if length(folder)>14 && strcmp(folder(1:9), 'Parkinson')
@@ -44,9 +47,8 @@ for i = 1:length(dataFolders)
                     newId = ['P', sprintf('%02d', id-800)];
                 end
                 rawData = load([dataPath, dataFile]).EEG;
-                data = rawData.data;
-                epochLen = size(data,2);
-                epochs = size(data,3);
+                epochLen = size(rawData.data,2);
+                epochs = size(rawData.data,3);
                 stimuli = cell(epochs, 1);
                 epoch = 1;
                 for k = 1:length(rawData.event)
@@ -55,12 +57,25 @@ for i = 1:length(dataFolders)
                         epoch = epoch + 1;
                     end
                 end
-                data = data(channels, 1:downSample ...
-                    :epochLen-downSample+mod(epochLen, downSample)+1,:);
+                data = zeros(channelNum, epochLen, epochs, "single");
+                data = rawData.data(channels, :, :);
+                %%Do this later with Python
+                % for k = 1:channelNum
+                %     for l = 1:epochs
+                %         data(k,:,l) = filter(b, a, data(k,:,l));
+                %     end
+                % end
+                % data = data(:, 1:downSample ...
+                %     :epochLen-downSample+mod(epochLen, downSample)+1, :);
                 newFile = [newFolder, newId, newName, ...
-                    Session, sprintf('.%03d', epochs), 'epochs.h5'];
+                    Session, sprintf('.%03d', epochs), 'epochs.', newType];
                 disp(newFile);
-                save('-float-hdf5', newFile, 'data', 'stimuli');
+                if strcmp(newType, 'h5')
+                    save('-float-hdf5', newFile, 'data', 'stimuli');
+                end
+                if strcmp(newType, 'mat')
+                    save(newFile, 'data', 'stimuli');
+                end
                 clear('rawData', 'data', 'stimuli');
             end
         end
