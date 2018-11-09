@@ -11,4 +11,11 @@ And some data should be deprecated.
 In fact we have been working here for a while. 
 There should be 'Week 0', 'Week -1', ... , 'Week -9'.
 We had a discussion several days ago and based on the dicisions we made I did some preprocessing.
-We decided to select channels around FCz (FCz, Fz, Cz, FC1, FC2, C1, C2) as we believe this region is greatly related to cognitive functions.
+We decided to select channels around Cz (Pz, Cz, Fz, P3, C3, F3, P4, C4, F4) as we believe this region is greatly related to cognitive functions.
+
+## Week 2
+The disappointing thing is that there is always some trivia in the final year thus I cannot fully focus on the project. 
+This week I tried to build models and the dataloader. 
+Dataloader is always something confusing. 
+In the past, I built it and ended up with too many parameters. 
+This time I try to make it as light as possible and get rid of those parameters.
