@@ -1,9 +1,11 @@
 # huge data files
+__pycache__/
 Parkinson Reinforcement Learning/
 Parkinson Oddball Task/
 Parkinson Conflict Task/
 Data/
 Data.bak/
+models/
 *.npy
 *.rar
 *.zip
