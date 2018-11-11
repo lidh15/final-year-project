@@ -16,6 +16,14 @@ We decided to select channels around Cz (Pz, Cz, Fz, P3, C3, F3, P4, C4, F4) as 
 ## Week 2
 The disappointing thing is that there is always some trivia in the final year thus I cannot fully focus on the project. 
 This week I tried to build models and the dataloader. 
-Dataloader is always something confusing. 
+Dataloader is always something bloated. 
 In the past, I built it and ended up with too many parameters. 
-This time I try to make it as light as possible and get rid of those parameters.
+This time I tried to make it as light as possible but it seems that I failed to make differences.
+
+## Week 3
+In the summer I saw significant inter-subject differences using VAE dimensionality reduction on Schizophrenia dataset.
+This Week I tried to use siamese network to classify the data according to the subjects.
+To my surprise, there is no difference at all.
+It can be good news: we no longer need to consider about inter-subject differences.
+But I think it is **BAD NEWS: maybe there is no difference in distributions at all and neural networks won't learn anything!**
+Just wait and see.
