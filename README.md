@@ -11,7 +11,13 @@ And some data should be deprecated.
 In fact we have been working here for a while. 
 There should be 'Week 0', 'Week -1', ... , 'Week -9'.
 We had a discussion several days ago and based on the dicisions we made I did some preprocessing.
-We decided to select channels around Cz (Pz, Cz, Fz, P3, C3, F3, P4, C4, F4) as we believe this region is greatly related to cognitive functions.
+
+We decided to select **channels around Cz (Pz, Cz, Fz, P3, C3, F3, P4, C4, F4)** as we believe this region is greatly related to cognitive functions.
+
+Why hdf5 files?
+
+Because when I tried to save them as .mat files, the size of the file was strangely huge.
+I didn't spend time finding the reason, and hdf5 is a second choice as a bridge between Matlab and Python.
 
 ## Week 2
 The disappointing thing is that there is always some trivia in the final year thus I cannot fully focus on the project. 
