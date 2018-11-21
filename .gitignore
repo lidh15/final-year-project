@@ -9,3 +9,6 @@ models/
 *.npy
 *.rar
 *.zip
+*.gif
+*.png
+*.jpg
