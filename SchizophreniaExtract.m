@@ -19,7 +19,7 @@ for i = 1:length(dataFolders)
                 ind(1,1) = 2;
                 indind = 1;
                 for j = 2:length(rawData.event)-1
-                    m = rawData.event(j+1).type;
+                    m = num2str(rawData.event(j+1).type);
                     if strcmp(rawData.event(j).type,'boundary') && strcmp(m,'boundary')
                         ind(indind,2) = j-1;
                         indind = indind + 1;
@@ -35,6 +35,7 @@ for i = 1:length(dataFolders)
                 else
                     newId = ['N', sprintf('%02d', str2double(dataFile(end-7:end-6))-48)];
                 end
+                tmp = 'S   ';
                 for j = 1:2
                     epochs = ind(j,2)-ind(j,1)+1;
                     data = zeros(channelNum, fs, epochs, "single");
@@ -42,8 +43,9 @@ for i = 1:length(dataFolders)
                     epoch = 1;
                     for k = ind(j,1):ind(j,2)
                         begin = rawData.event(k).latency;
+                        m = num2str(rawData.event(k).type);
                         data(:, :, epoch) = rawData.data(channels, begin:begin+fs-1);
-                        stimuli{epoch, 1} = sprintf('S%3d', rawData.event(k).type);
+                        stimuli{epoch, 1} = [tmp(1:4-length(m)), m];
                         epoch = epoch + 1;
                     end
                     newFile = [newFolder, 'Schi', newId, '.', 'Conf', ...
