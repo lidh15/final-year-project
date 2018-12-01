@@ -15,11 +15,12 @@ dataPath = './Data/'
 newPath = './Data.npz/'
 h5Files = listdir(dataPath)
 fs = 500
-downSample = 5
 fl = 4
 fh = 36
-N, Wn = ss.cheb2ord([fl*2/fs, fh*2/fs], [fl*9/10*2/fs, fh/9*10*2/fs], 3, 20)
-b, a = ss.cheby2(N, 20, Wn, 'bandpass')
+ext = .9
+N, Wn = ss.cheb2ord([fl*2/fs, fh*2/fs], [fl*ext*2/fs, fh/ext*2/fs], 3, 20)
+b, a = ss.cheby2(N, 40, Wn, 'bandpass')
+downSample = 5
 fsamples = 9
 W = 9
 padded = fs+4
@@ -60,8 +61,8 @@ for h5File in h5Files:
             pad = np.zeros(padded)
             for i in range(epochs):
                 for j in range(chans):
-                    filted = ss.filtfilt(b, a, rawData[i, :, j])\
-                                                        [trigger:trigger+fs]
+                    rmmean = rawData[i, :, j]-np.mean(rawData[i, :, j])
+                    filted = ss.filtfilt(b, a, rmmean)[trigger:trigger+fs]
                     data[i, j] = ss.decimate(filted, downSample)           
                     pad[2:-2] = filted
                     for k in range(W):

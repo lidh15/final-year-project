@@ -5,15 +5,17 @@ Created on Sat Nov  3 21:52:26 2018
 @author: user
 """
 
-from os import listdir
+import os
 import numpy as np
 
-dataPath = './Data/'
-dataFiles = listdir(dataPath)
+dataPath = './Data.npz/'
+dataFiles = os.listdir(dataPath)
 channels = 9
-dataLen = {'rein':800,'conf':650,'oddb':400}
-threshold = 1e3
+# I think this is fine but I'm not sure if this is a best threshold.
+threshold = 1e3 
+total_pieces = 0
 outliers = []
+epoch_outliers = []
 #Vars = []
 for dataFile in dataFiles:
     if dataFile.endswith('.npz'):
@@ -21,24 +23,40 @@ for dataFile in dataFiles:
         data = npzFile['data']
         for i in range(data.shape[0]):
             for j in range(channels):
+                total_pieces += 1
                 sampleVar = np.var(data[i, j])
                 if sampleVar > threshold:
-                    print(dataFile, i, j)
-                    outliers.append(dataFile+' '+str(i)+' '+str(j)+'\n')
+                    # print(dataFile, i, j)
+                    epoch_outliers.append(dataFile+' '+str(i)+'-'+str(j)+'\n')
         npzFile.close()
 
+outliers = list(set([epoch.split('-')[0] for epoch in epoch_outliers]))
+outliers.sort()
 #with open('outliers.txt', 'w') as f:
 #    f.writelines(outliers)
-
-## p23 conflict task 1 epoch 50,51,52,53,54 will be dprecated.
-#data = np.load(dataPath+'p23conf1.912epochs.npz')
-#newdata = np.zeros((907,channels,dataLen['conf']),dtype='float32')
-#newdata[:50] = data['data'][:50]
-#newdata[50:] = data['data'][55:]
-#newstimuli = [str(sti) for sti in data['stimuli'][:50]]
-#_ = [newstimuli.append(str(sti)) for sti in data['stimuli'][55:]]
-#np.savez(dataPath+'p23conf1.907epochs.npz', data=newdata,stimuli=newstimuli)
-#data.close()
+outliersFiles = {}
+for dataFile in set([outlier.split(' ')[0] for outlier in outliers]):
+    outliersFiles[dataFile] = []
+for outlier in outliers:
+    outliersplit = outlier.split(' ')
+    outliersFiles[outliersplit[0]].append(int(outliersplit[1]))
+    
+for dataFile in outliersFiles:
+    npzFile = np.load(dataPath+dataFile)
+    all_epochs = set(range(int(dataFile.split('.')[2][:3])))
+    corrupted = set(outliersFiles[dataFile])
+    used_epochs = list(all_epochs-corrupted)
+    used_epochs.sort()
+    data = npzFile['data'][used_epochs]
+    spec = npzFile['spec'][used_epochs]
+    stim = npzFile['stim'][used_epochs]
+    npzFile.close()
+    np.savez(dataPath+dataFile, data=data, spec=spec, stim=stim)
+    if used_epochs:
+        newFile = dataFile[:14]+('%03d'%len(used_epochs))+dataFile[-10:]
+        os.rename(dataPath+dataFile, dataPath+newFile)
+    else:
+        os.remove(dataPath+dataFile)
 
 ## Noise Simulation
 #from scipy.interpolate import interp1d
