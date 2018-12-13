@@ -32,8 +32,8 @@ for dataFile in dataFiles:
 
 outliers = list(set([epoch.split('-')[0] for epoch in epoch_outliers]))
 outliers.sort()
-#with open('outliers.txt', 'w') as f:
-#    f.writelines(outliers)
+with open('outliers.txt', 'w') as f:
+    f.writelines(outliers)
 outliersFiles = {}
 for dataFile in set([outlier.split(' ')[0] for outlier in outliers]):
     outliersFiles[dataFile] = []
