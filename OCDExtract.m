@@ -34,7 +34,7 @@ for i = 1:length(dataFolders)
                 end
                 data = zeros(channelNum, epochLen, epochs, "single");
                 data = rawData.data(channels, :, :);
-                newFile = [newFolder, 'OCD_', newId, '.', 'Flan', ...
+                newFile = [newFolder, 'OCD_', newId, '.', 'Rein', ...
                     '1', sprintf('.%3d', epochs), 'epochs.', newType];
                 disp(newFile);
                 if strcmp(newType, 'h5')

@@ -43,7 +43,7 @@ for h5File in h5Files:
             h5 = File(dataPath+h5File, 'r')
             if 'Schi' in h5File or 'Depr' in h5File or 'Rest' in h5File:
                 trigger = 0
-            elif 'Flan' in h5File or 'Oddb' in h5File:
+            elif 'OCD_' in h5File or 'Oddb' in h5File:
                 trigger = 1000
             elif 'Conf' in h5File:
                 trigger = 750
