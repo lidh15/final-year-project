@@ -1,8 +1,0 @@
-# in imports/core.py
-plt.switch_backend('agg')
-from matplotlib.backends.backend_pdf import PdfPages
-
-# in basic_train.py
-pdf = PdfPages('/home/lidh/GitHub/final-year-project/models/a.pdf')
-pdf.savefig()
-pdf.close()
