@@ -74,7 +74,7 @@ for i = 1:length(dataFolders)
                     for k = ind(3,1):ind(3,2)
                         begin = rawData.event(k).latency;
                         data(:, :, epoch) = rawData.data(channels, begin:begin+fs-1);
-                        stimuli{epoch, 1} = 'S  2';
+                        stimuli{epoch, 1} = 'S  5';
                         epoch = epoch + 1;
                     end
                     newFile = [newFolder, 'Schi', newId, '.', 'Rest', ...
