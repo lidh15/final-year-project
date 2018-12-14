@@ -21,16 +21,25 @@ for dataFile in dataFiles:
     if dataFile.endswith('.npz'):
         npzFile = np.load(dataPath+dataFile)
         data = npzFile['data']
+        stim = npzFile['stim']
         for i in range(data.shape[0]):
-            for j in range(channels):
-                total_pieces += 1
-                sampleVar = np.var(data[i, j])
-                if sampleVar > threshold:
-                    # print(dataFile, i, j)
-                    epoch_outliers.append(dataFile+' '+str(i)+'-'+str(j)+'\n')
+            if ('rein' in dataFile and 'depr' in dataFile and \
+                ((not 9 < int(stim[i]) < 230)) or int(stim[i]) == 110) or \
+                ('conf' in dataFile and 'schi' in dataFile and \
+                (0 < int(stim[i]) < 6 or 100 < int(stim[i]) < 106)):
+                    for j in range(channels):
+                        # print(dataFile, i, j)
+                        epoch_outliers.append(dataFile+' '+str(i)+'-'+str(j))
+            else:
+                for j in range(channels):
+                    total_pieces += 1
+                    sampleVar = np.var(data[i, j])
+                    if sampleVar > threshold:
+                        # print(dataFile, i, j)
+                        epoch_outliers.append(dataFile+' '+str(i)+'-'+str(j))
         npzFile.close()
 
-outliers = list(set([epoch.split('-')[0] for epoch in epoch_outliers]))
+outliers = list(set([epoch.split('-')[0]+'\n' for epoch in epoch_outliers]))
 outliers.sort()
 with open('outliers.txt', 'w') as f:
     f.writelines(outliers)
@@ -57,6 +66,12 @@ for dataFile in outliersFiles:
         os.rename(dataPath+dataFile, dataPath+newFile)
     else:
         os.remove(dataPath+dataFile)
+
+stims = {}
+for dataFile in os.listdir(dataPath):
+    npzFile = np.load(dataPath+dataFile)
+    stims[dataFile] = list(set([str(s) for s in npzFile['stim']]))
+    npzFile.close()
 
 ## Noise Simulation
 #from scipy.interpolate import interp1d
