@@ -40,7 +40,8 @@ for i = 1:length(dataFolders)
                 stimuli = cell(epochs, 1);
                 epoch = 1;
                 for k = 1:length(rawData.event)
-                    if mod(rawData.event(k).latency, epochLen) == Marker
+                    if mod(rawData.event(k).latency, epochLen) == Marker && ...
+                        rawData.event(k).type(1) == 'S'
                         stimuli{epoch, 1} = rawData.event(k).type;
                         epoch = epoch + 1;
                     end

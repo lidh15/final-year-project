@@ -33,20 +33,19 @@ for i = 1:length(dataFolders)
                 rawData = load([dataPath, dataFile]).EEG;
                 epoch = 1;
                 epochs = length(rawData.event)-1;
-                k0 = 2;
+                epoch0 = 1;
                 if id == 896
                     epochs = epochs-3;
-                    k0 = k0+3;
+                    epoch0 = 4;
                 % else
                 %     continue
                 end
                 stimuli = cell(epochs, 1);
                 data = zeros(channelNum, fs, epochs, "single");
-                for k = k0:epochs
-                    begin = rawData.event(k).latency;
-                    stimuli{epoch, 1} = rawData.event(k).type;
-                    data(:, :, k) = rawData.data(channels, begin:begin+fs-1);
-                    epoch = epoch + 1;
+                for epoch = 1:epochs
+                    begin = rawData.event(epoch+epoch0).latency;
+                    stimuli{epoch, 1} = rawData.event(epoch+epoch0).type;
+                    data(:, :, epoch) = rawData.data(channels, begin:begin+fs-1);
                 end
                 newFile = [newFolder, 'Park', newId, '.', 'Rest', ...
                     Session, sprintf('.%03d', epochs), 'epochs.', newType];

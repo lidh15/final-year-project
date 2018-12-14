@@ -36,7 +36,14 @@ for i = 1:length(dataFolders)
                     newId = ['N', sprintf('%02d', str2double(dataFile(end-7:end-6))-48)];
                 end
                 tmp = 'S   ';
+                if strcmp(newId, 'P15')
+                    ind(2, :) = ind(3, :);
+                    indind = 2;
+                end
                 for j = 1:2
+                    if strcmp(newId, 'P10') && j == 1
+                        continue
+                    end
                     epochs = ind(j,2)-ind(j,1)+1;
                     data = zeros(channelNum, fs, epochs, "single");
                     stimuli = cell(epochs, 1);
@@ -67,7 +74,7 @@ for i = 1:length(dataFolders)
                     for k = ind(3,1):ind(3,2)
                         begin = rawData.event(k).latency;
                         data(:, :, epoch) = rawData.data(channels, begin:begin+fs-1);
-                        stimuli{epoch, 1} = 'S  1';
+                        stimuli{epoch, 1} = 'S  2';
                         epoch = epoch + 1;
                     end
                     newFile = [newFolder, 'Schi', newId, '.', 'Rest', ...
