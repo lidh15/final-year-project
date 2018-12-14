@@ -71,10 +71,10 @@ for h5File in h5Files:
                 tmp = ''
                 if epochs < 100:
                     tmpstr = 'stimuli/value/_%02d/value'%i
-                elif epochs < 1000:
-                    tmpstr = 'stimuli/value/_%03d/value'%i
+#                elif epochs > 1000:
+#                    tmpstr = 'stimuli/value/_%04d/value'%i
                 else:
-                    tmpstr = 'stimuli/value/_%04d/value'%i
+                    tmpstr = 'stimuli/value/_%03d/value'%i
                 for char in h5[tmpstr]:
                     tmp += chr(char)
                 stim.append(tmp[1:])
