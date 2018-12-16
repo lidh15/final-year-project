@@ -78,6 +78,7 @@ for h5File in h5Files:
                 for char in h5[tmpstr]:
                     tmp += chr(char)
                 stim.append(tmp[1:])
+            spec = np.log10(spec)
             np.savez(newPath+h5File[:-3].lower(), data=data, spec=spec, stim=stim)
             print(h5File[:-3].lower())
             # break
