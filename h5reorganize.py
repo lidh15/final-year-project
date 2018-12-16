@@ -18,6 +18,7 @@ fs = 500
 fl = 4
 fh = 36
 ext = .9
+eps = 1e-5
 N, Wn = ss.cheb2ord([fl*2/fs, fh*2/fs], [fl*ext*2/fs, fh/ext*2/fs], 3, 20)
 b, a = ss.cheby2(N, 40, Wn, 'bandpass')
 downSample = 5
@@ -78,7 +79,7 @@ for h5File in h5Files:
                 for char in h5[tmpstr]:
                     tmp += chr(char)
                 stim.append(tmp[1:])
-            spec = np.log10(spec)
+            spec = np.log10(spec+eps)
             np.savez(newPath+h5File[:-3].lower(), data=data, spec=spec, stim=stim)
             print(h5File[:-3].lower())
             # break
